@@ -1,5 +1,14 @@
+![GitHub](https://img.shields.io/github/license/akaSyntaax/ts3-liebe?style=for-the-badge)
+![GitHub Releases](https://img.shields.io/github/downloads/akaSyntaax/ts3-liebe/1.0/total?style=for-the-badge)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/akaSyntaax/ts3-liebe?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/akaSyntaax/ts3-liebe?style=for-the-badge)
+![GitHub stars](https://img.shields.io/github/stars/akaSyntaax/ts3-liebe?style=for-the-badge)
+
 ## TeamSpeak 3 Liebe (AutoFollow) Plugin
 Brings love to the world of teamspeak. Pretty much an AutoFollower.
+
+### Downloads
+Head over to the [release section](https://github.com/akaSyntaax/ts3-liebe/releases)
 
 ### Build requirements
 * cmake

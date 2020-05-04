@@ -1,5 +1,5 @@
 #if defined(WIN32) || defined(__WIN32__) || defined(_WIN32)
-#pragma warning (disable : 4100)  /* Disable Unreferenced parameter warning */
+#pragma warning (disable : 4100)
 #include <Windows.h>
 #endif
 
@@ -8,10 +8,7 @@
 #include <string.h>
 #include <assert.h>
 #include "teamspeak/public_errors.h"
-#include "teamspeak/public_errors_rare.h"
 #include "teamspeak/public_definitions.h"
-#include "teamspeak/public_rare_definitions.h"
-#include "teamspeak/clientlib_publicdefinitions.h"
 #include "ts3_functions.h"
 #include "plugin.h"
 
@@ -27,14 +24,11 @@ static struct TS3Functions ts3Functions;
 #define PLUGIN_API_VERSION 23
 
 #define PATH_BUFSIZE 512
-#define COMMAND_BUFSIZE 128
 #define INFODATA_BUFSIZE 128
-#define SERVERINFO_BUFSIZE 256
-#define CHANNELINFO_BUFSIZE 512
 #define RETURNCODE_BUFSIZE 128
 
 static char* pluginID = NULL;
-static uint64 loverID = NULL;
+static uint64 loverID = 0;
 
 #ifdef _WIN32
 /* Helper function to convert wchar_T to Utf-8 encoded strings on Windows */
@@ -184,7 +178,7 @@ void ts3plugin_infoData(uint64 serverConnectionHandlerID, uint64 id, enum Plugin
 	char* name;
 
 	if (type == PLUGIN_CLIENT || type == PLUGIN_SERVER || type == PLUGIN_CHANNEL) {
-		if (loverID != NULL) {
+		if (loverID > 0) {
 			if (ts3Functions.getClientVariableAsString(serverConnectionHandlerID, (anyID)loverID, CLIENT_NICKNAME, &name) != ERROR_ok) {
 				printf("Error getting client nickname\n");
 				return;
@@ -274,11 +268,11 @@ void ts3plugin_onClientKickFromChannelEvent(uint64 serverConnectionHandlerID, an
 }
 
 void ts3plugin_onClientKickFromServerEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, anyID kickerID, const char* kickerName, const char* kickerUniqueIdentifier, const char* kickMessage) {
-	loverID = NULL;
+	loverID = 0;
 }
 
 void ts3plugin_onClientBanFromServerEvent(uint64 serverConnectionHandlerID, anyID clientID, uint64 oldChannelID, uint64 newChannelID, int visibility, anyID kickerID, const char* kickerName, const char* kickerUniqueIdentifier, uint64 time, const char* kickMessage) {
-	loverID = NULL;
+	loverID = 0;
 }
 
 void ts3plugin_onMenuItemEvent(uint64 serverConnectionHandlerID, enum PluginMenuType type, int menuItemID, uint64 selectedItemID) {
@@ -289,7 +283,7 @@ void ts3plugin_onMenuItemEvent(uint64 serverConnectionHandlerID, enum PluginMenu
 			loverID = selectedItemID;
 			break;
 		case 1:
-			loverID = NULL;
+			loverID = 0;
 			break;
 		default:
 			break;

@@ -169,7 +169,7 @@ void ts3plugin_initMenus(struct PluginMenuItem ***menuItems, char **menuIcon) {
     END_CREATE_MENUS;
 
     *menuIcon = (char *) malloc(PLUGIN_MENU_BUFSZ * sizeof(char));
-    _strcpy(*menuIcon, PLUGIN_MENU_BUFSZ, "liebe.png");
+    _strcpy(*menuIcon, PLUGIN_MENU_BUFSZ, "love.png");
 }
 
 /************************** TeamSpeak callbacks ***************************/

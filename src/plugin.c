@@ -50,7 +50,7 @@ int ts3plugin_apiVersion() {
 
 /* Plugin author */
 const char *ts3plugin_author() {
-    return "vsnry.dev & syntaax.dev";
+    return "Maik Wagner, Jan Hendrik Lübke";
 }
 
 /* Plugin description */

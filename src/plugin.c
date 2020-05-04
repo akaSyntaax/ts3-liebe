@@ -173,21 +173,23 @@ void ts3plugin_initMenus(struct PluginMenuItem ***menuItems, char **menuIcon) {
 }
 
 /************************** TeamSpeak callbacks ***************************/
+uint64 getOwnClientID(uint64 serverConnectionHandlerID) {
+    anyID myID;
+
+    if (ts3Functions.getClientID(serverConnectionHandlerID, &myID) != ERROR_ok) {
+        ts3Functions.logMessage("Error querying client ID", LogLevel_ERROR, "Plugin", serverConnectionHandlerID);
+        return -1;
+    }
+
+    return myID;
+}
 
 void follow(uint64 serverConnectionHandlerID, anyID clientID, uint64 channelID, uint64 oldChanneID) {
     if (clientID == loverID && channelID != oldChanneID) {
         char returnCode[RETURNCODE_BUFSIZE];
-        anyID myID;
-
-        if (ts3Functions.getClientID(serverConnectionHandlerID, &myID) != ERROR_ok) {
-            ts3Functions.logMessage("Error querying client ID", LogLevel_ERROR, "Plugin", serverConnectionHandlerID);
-            return;
-        }
-
-
         ts3Functions.createReturnCode(pluginID, returnCode, RETURNCODE_BUFSIZE);
 
-        if (ts3Functions.requestClientMove(serverConnectionHandlerID, myID, channelID, "", returnCode) != ERROR_ok) {
+        if (ts3Functions.requestClientMove(serverConnectionHandlerID, getOwnClientID(serverConnectionHandlerID), channelID, "", returnCode) != ERROR_ok) {
             ts3Functions.logMessage("Error requesting client move", LogLevel_INFO, "Plugin", serverConnectionHandlerID);
         }
     }
@@ -225,7 +227,9 @@ void ts3plugin_onClientBanFromServerEvent(uint64 serverConnectionHandlerID, anyI
 void ts3plugin_onMenuItemEvent(uint64 serverConnectionHandlerID, enum PluginMenuType type, int menuItemID,
                                uint64 selectedItemID) {
     if (menuItemID == 0) {
-        loverID = selectedItemID;
+        if (selectedItemID != getOwnClientID(serverConnectionHandlerID)) {
+            loverID = selectedItemID;
+        }
     } else if (menuItemID == 1) {
         loverID = 0;
     }
